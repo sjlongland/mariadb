@@ -129,10 +129,20 @@ docker_create_db_directories() {
 	# TODO other directories that are used by default? like /var/lib/mysql-files
 	# see https://github.com/docker-library/mysql/issues/562
 	mkdir -p "$DATADIR"
-
 	if [ "$user" = "0" ]; then
-		# this will cause less disk access than `chown -R`
 		find "$DATADIR" \! -user mysql -exec chown mysql '{}' +
+
+		# Do we need any special plug-ins before set-up?
+		if [ -n "${MYSQL_PLUGINS}" ] && \
+				[ ! -f "/.plugins-installed" ]; then
+			apt-get update
+			apt-get install -y $(
+				for plugin in ${MYSQL_PLUGINS}; do
+					echo mariadb-plugin-${plugin}
+				done
+			)
+			touch "/.plugins-installed"
+		fi
 	fi
 }
 
