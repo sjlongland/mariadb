@@ -17,6 +17,9 @@ RUN set -ex; \
 	fi; \
 	rm -rf /var/lib/apt/lists/*
 
+# Force non-interactive behaviour out of debconf:
+ENV DEBIAN_FRONTEND noninteractive
+
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 RUN set -ex; \

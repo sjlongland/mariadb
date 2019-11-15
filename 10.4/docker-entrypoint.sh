@@ -138,7 +138,7 @@ docker_create_db_directories() {
 			apt-get update
 			apt-get install -y $(
 				for plugin in ${MYSQL_PLUGINS}; do
-					echo mariadb-plugin-${plugin}
+					echo mariadb-plugin-${plugin}=${MARIADB_VERSION}
 				done
 			)
 			touch "/.plugins-installed"
