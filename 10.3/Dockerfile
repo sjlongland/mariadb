@@ -20,6 +20,9 @@ RUN set -ex; \
 # Force non-interactive behaviour out of debconf:
 ENV DEBIAN_FRONTEND noninteractive
 
+# Prevent systemctl from being executed
+RUN dpkg-divert --add /bin/systemctl && ln -sT /bin/true /bin/systemctl
+
 # add gosu for easy step-down from root
 ENV GOSU_VERSION 1.10
 RUN set -ex; \
