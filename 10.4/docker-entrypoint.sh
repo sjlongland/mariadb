@@ -143,6 +143,14 @@ docker_create_db_directories() {
 			)
 			touch "/.plugins-installed"
 		fi
+
+		# Do we need to run additional pre-start hooks?
+		if [ -n "${MYSQL_PREINIT_D}" ] && \
+				[ -d "${MYSQL_PREINIT_D}" ]; then
+			for script in "${MYSQL_PREINIT_D}"/*.sh ; do
+				. "${script}"
+			done
+		fi
 	fi
 }
 
